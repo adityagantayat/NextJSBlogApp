@@ -1,15 +1,18 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { getCategories } from '../services'
+import { Category } from '../interfaces'
 
-interface Category {
-  name: String
-  slug: String
-}
-const categories: Array<Category> = [
-  { name: 'React', slug: 'react' },
-  { name: 'webdev', slug: 'webdev' },
-]
 const Header: React.FC = () => {
+  const [categories, setCategories] = useState<Category[]>([])
+  useEffect(() => {
+    getCategories().then((newCategories: Category[]) =>
+      setCategories(newCategories)
+    )
+    return () => {
+      console.log('cleaned up')
+    }
+  }, [])
   return (
     <div className="container mx-auto mb-8 px-10">
       <div className="inline-block w-full border-b border-blue-400 py-8">
